@@ -1,5 +1,6 @@
 import { Col, Flex } from "antd";
 import TaskHeader from "./components/TaskHeader";
+import TaskContainer from "./components/TaskContainer";
 
 function App() {
   return (
@@ -14,7 +15,7 @@ function App() {
         <Flex justify="center">
           <Col span={12}>
             <TaskHeader />
-            <div></div>
+            <TaskContainer />
           </Col>
         </Flex>
       </div>
