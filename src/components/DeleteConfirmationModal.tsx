@@ -4,14 +4,14 @@ import warningIcon from "../assets/warning.svg";
 
 type TDeleteModalProps = {
   deleteModal: boolean;
-  handleCancel: any;
+  handleDeleteCancel: any;
   handleDeleteTask: any;
   taskId: string;
 };
 
 const DeleteConfirmationModal = ({
   deleteModal,
-  handleCancel,
+  handleDeleteCancel,
   handleDeleteTask,
   taskId
 }: TDeleteModalProps) => {
@@ -19,7 +19,7 @@ const DeleteConfirmationModal = ({
     <Modal
       open={deleteModal}
       title="Delete Task"
-      onCancel={handleCancel}
+      onCancel={handleDeleteCancel}
       footer={null}
     >
       <div>
@@ -36,7 +36,7 @@ const DeleteConfirmationModal = ({
           </div>
           <div style={{ textAlign: "right" }}>
             <Space>
-              <Button onClick={handleCancel}>Cancel</Button>
+              <Button onClick={handleDeleteCancel}>Cancel</Button>
               <Button
                 htmlType="submit"
                 type="primary"

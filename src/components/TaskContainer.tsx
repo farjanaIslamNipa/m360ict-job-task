@@ -3,32 +3,45 @@ import editIcon from "../assets/edit-icon.svg";
 import deleteIcon from "../assets/delete-icon.svg";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { TTask } from "../types";
-import {capitalizeFirstLetter} from "../utils/capitalizeFirstLetter";
 import {toast} from "sonner";
 import {deleteTask} from "../redux/features/taskSlice";
 import {useState} from "react";
 import DeleteConfirmationModal from "./DeleteConfirmationModal";
+import EditTaskModal from "./EditTaskModal";
 
 const TaskContainer = () => {
+  const [editModal, setEditModal] = useState(false)
   const [deleteModal, setDeleteModal] = useState(false)
   const [taskId, setTaskId] = useState('')
+  const [task, setTask] = useState<TTask | null>(null)
   const { tasks } = useAppSelector((state) => state.tasks);
   const dispatch = useAppDispatch();
 
-  const handleDeleteTask = (id: string) => {
-    const toastId = toast.loading('Deleting task...')
-    dispatch(deleteTask(id))
-    toast.success('Task deleted successfully', {id: toastId, duration: 2000})
-    handleCancel()
-  }
-  const showModal = (id: string) => {
+
+  const showEditModal = (item: TTask) => {
+    setTask(item)
+    setEditModal(true);
+  };
+
+  const handleEditCancel = () => {
+    setEditModal(false);
+  };
+
+
+  const showDeleteModal = (id: string) => {
     setTaskId(id)
     setDeleteModal(true);
   };
 
-  const handleCancel = () => {
+  const handleDeleteCancel = () => {
     setDeleteModal(false);
   };
+  const handleDeleteTask = (id: string) => {
+    const toastId = toast.loading('Deleting task...')
+    dispatch(deleteTask(id))
+    toast.success('Task deleted successfully', {id: toastId, duration: 2000})
+    handleDeleteCancel()
+  }
   return (
     <div
       style={{
@@ -44,8 +57,8 @@ const TaskContainer = () => {
             <Col className="gutter-row" span={10}>
               <div style={{ paddingRight: "10px" }}>
                 <p style={{ color: "#b1b1b1", fontWeight: "600" }}>Title</p>
-                <p style={{ fontSize: "17px", fontWeight: "500" }}>
-                  {capitalizeFirstLetter(task?.title)}
+                <p style={{ fontSize: "17px", fontWeight: "500", textTransform: 'capitalize' }}>
+                  {task?.title}
                 </p>
               </div>
             </Col>
@@ -53,7 +66,7 @@ const TaskContainer = () => {
               <div style={{ padding: "0" }}>
                 <p style={{ color: "#b1b1b1", fontWeight: "600" }}>Priority</p>
                 <p style={{ color: task?.priority === 'High' ? "#f5222d" : task?.priority === "Medium" ? "#faad14" : "#389e0d", fontWeight: "700" }}>
-                  {task?.priority || "Low"}
+                  {task?.priority}
                 </p>
               </div>
             </Col>
@@ -84,10 +97,10 @@ const TaskContainer = () => {
 
                 }}
               >
-                <div style={{ cursor: "pointer" }}>
+                <div onClick={() => showEditModal(task)} style={{ cursor: "pointer" }}>
                   <img src={editIcon} alt="Edit task" height={"21px"} />
                 </div>
-                <div onClick={() => showModal(task?.id)} style={{ cursor: "pointer" }}>
+                <div onClick={() => showDeleteModal(task?.id)} style={{ cursor: "pointer" }}>
                   <img src={deleteIcon} alt="delete task" height={"25px"} />
                 </div>
               </div>
@@ -95,7 +108,8 @@ const TaskContainer = () => {
           </Row>
         ))
         }
-        <DeleteConfirmationModal deleteModal={deleteModal} handleCancel={handleCancel} handleDeleteTask={handleDeleteTask} taskId={taskId}  />
+        <DeleteConfirmationModal deleteModal={deleteModal} handleDeleteCancel={handleDeleteCancel} handleDeleteTask={handleDeleteTask} taskId={taskId}  />
+        <EditTaskModal editModal={editModal} handleEditCancel={handleEditCancel} task={task}  />
     </div>
   );
 };

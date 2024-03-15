@@ -1,54 +1,58 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Flex, Form, Input, Modal, Space } from "antd";
-import { useState } from "react";
-import {addTask} from "../redux/features/taskSlice";
-import {useAppDispatch} from "../redux/hooks";
-import { v4 as uuidv4 } from 'uuid';
+import {Button, Flex, Form, Input, Modal, Space} from "antd";
+import {TPriority, TTask} from "../types";
+import {useEffect, useState} from "react";
 import {toast} from "sonner";
-import {TPriority} from "../types";
+import {useAppDispatch} from "../redux/hooks";
+import {updateTask} from "../redux/features/taskSlice";
 
-type TAddTaskModalProps = {
-  addTaskModal: boolean;
-  handleCancel: any;
+type TEditModalProps = {
+  editModal: boolean;
+  handleEditCancel: any;
+  task: TTask | null;
 };
 
-const AddTaskModal = ({ addTaskModal, handleCancel }: TAddTaskModalProps) => {
-  const [taskTitle, setTaskTitle] = useState("");
-  const [taskPriority, setTaskPriority] = useState("");
+const EditTaskModal = ({editModal, handleEditCancel, task} : TEditModalProps) => {
+  const [editedTask, setEditedTask] = useState<TTask | null>(null);
 
+
+  const [taskTitle, setTaskTitle] = useState("");
+  const [taskPriority, setTaskPriority] = useState<TPriority | null>(null);
   const dispatch = useAppDispatch()
 
   const handlePriority = (priority: TPriority) => {
     setTaskPriority(priority);
   };
 
-  const [form] = Form.useForm()
-  const onFinish = () => {
-    const toastId = toast.loading('Adding task....')
+  const handleEditTask = () => {
+    const id = task?.id;
     const taskData = {
-      id: uuidv4() as string,
+      ...editedTask,
+      id,
       title: taskTitle,
-      priority:taskPriority || "Low"
+      priority: taskPriority
     }
-    dispatch(addTask(taskData))
-    setTaskTitle('')
-    setTaskPriority('')
-    handleCancel()
-    toast.success('Task added successfully', {id: toastId, duration: 2000})
-    form.resetFields()
-
+    const toastId = toast.loading('Updating task....')
+    dispatch(updateTask(taskData))
+    handleEditCancel()
+    toast.success('Task updated successfully', {id: toastId, duration: 2000})
   }
-;
+
+  useEffect(() => {
+    setEditedTask(task as TTask)
+  }, [task])
+  useEffect(() => {
+    setTaskPriority(task?.priority as TPriority)
+  }, [task?.priority])
   return (
-    <>
-      <Modal
-        open={addTaskModal}
-        title="Add Task"
-        onCancel={handleCancel}
-        footer={null}
-      >
-        <div>
-          <Form layout="vertical" onFinish={onFinish} form={form}>
+    <Modal
+      open={editModal}
+      title="Update Task"
+      onCancel={handleEditCancel}
+      footer={null}
+    >
+      <div>
+      <Form layout="vertical" onFinish={handleEditTask}>
             <div style={{ margin: "20px 0 30px" }}>
               <div>
                 <Form.Item
@@ -66,7 +70,7 @@ const AddTaskModal = ({ addTaskModal, handleCancel }: TAddTaskModalProps) => {
                     }
                   ]}
                   >
-                 <Input onChange={(e) => setTaskTitle(e.target.value)} placeholder="Enter task name" />
+                 <Input onChange={(e) => setTaskTitle(e.target.value)}  defaultValue={task?.title} placeholder="Enter task name" />
                 </Form.Item>
               </div>
               <div style={{ marginTop: "25px" }}>
@@ -114,7 +118,7 @@ const AddTaskModal = ({ addTaskModal, handleCancel }: TAddTaskModalProps) => {
             </div>
             <div style={{ textAlign: "right" }}>
               <Space>
-                <Button onClick={handleCancel}>Cancel</Button>
+                <Button onClick={handleEditCancel}>Cancel</Button>
                 <Button
                   htmlType="submit"
                   type="primary"
@@ -125,10 +129,9 @@ const AddTaskModal = ({ addTaskModal, handleCancel }: TAddTaskModalProps) => {
               </Space>
             </div>
           </Form>
-        </div>
-      </Modal>
-    </>
+      </div>
+    </Modal>
   );
 };
 
-export default AddTaskModal;
+export default EditTaskModal;
