@@ -1,12 +1,76 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
 
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+:root {
+  --primary-color: "#22075e";
+  --secondary-color: "#391085";
+}
 
-body{
+body {
   font-family: "Poppins", sans-serif;
+}
+.ant-input:focus {
+  border-color: #b37feb;
+  outline: 0;
+  -webkit-box-shadow: 0 0 0 2px rgba(57, 16, 133, 0.2);
+  box-shadow: 0 0 0 2px rgba(57, 16, 133, 0.2) rgba(87, 168, 233, 0.2);
+}
+.ant-input:hover{
+  border-color: #b37feb;
+}
+
+.ant-radio-button-wrapper:hover {
+  color: #391085 !important;
+}
+.ant-radio-button-wrapper-checked:hover {
+  color: #ffffff !important;
+  border-color: #391085
+}
+.ant-radio-button .ant-radio-button-checked{
+  background-color: #391085 !important;
+  border-color: #391085
+}
+.ant-radio-group-solid :where(.css-dev-only-do-not-override-jy9edw).ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):hover {
+  background-color: #391085 !important;
+  border-color: #391085
+}
+.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled){
+  background-color: #391085 !important;
+  border-color: #391085;
+}
+
+.priority-btn{
+  padding:5px 10px; 
+  border-radius:8px; 
+  width: 80px; 
+  text-align: center; 
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+.priority-high{
+  border: 1px solid #f5222d;
+}
+.priority-high:hover{
+  color: #ffffff;
+  background-color: #f5222d;
+}
+.priority-medium{
+  border: 1px solid #faad14;
+}
+.priority-medium:hover{
+  color: #ffffff;
+  background-color: #faad14;
+}
+.priority-low{
+  border: 1px solid #389e0d;
+}
+.priority-low:hover{
+  color: #ffffff;
+  background-color: #389e0d;
 }
