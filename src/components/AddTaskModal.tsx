@@ -1,12 +1,14 @@
-import { Button, Flex, Input, Modal, Space } from "antd";
-import { FormEvent, MouseEventHandler, useState } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Button, Flex, Form, Input, Modal, Space } from "antd";
+import { useState } from "react";
 import {addTask} from "../redux/features/taskSlice";
 import {useAppDispatch} from "../redux/hooks";
 import { v4 as uuidv4 } from 'uuid';
+import {toast} from "sonner";
 
 type TAddTaskModalProps = {
   addTaskModal: boolean;
-  handleCancel: MouseEventHandler;
+  handleCancel: any;
 };
 
 const AddTaskModal = ({ addTaskModal, handleCancel }: TAddTaskModalProps) => {
@@ -19,15 +21,21 @@ const AddTaskModal = ({ addTaskModal, handleCancel }: TAddTaskModalProps) => {
     setTaskPriority(priority);
   };
 
-  const submitTask = (e: FormEvent) => {
-    e.preventDefault()
+  const [form] = Form.useForm()
+  const onFinish = () => {
+    const toastId = toast.loading('Adding task....')
     const taskData = {
       id: uuidv4() as string,
       title: taskTitle,
       priority:taskPriority
     }
     dispatch(addTask(taskData))
+    setTaskTitle('')
+    setTaskPriority('')
     handleCancel()
+    toast.success('Task added successfully', {id: toastId, duration: 2000})
+    form.resetFields()
+
   }
 ;
   return (
@@ -39,26 +47,32 @@ const AddTaskModal = ({ addTaskModal, handleCancel }: TAddTaskModalProps) => {
         footer={null}
       >
         <div>
-          <form onSubmit={submitTask}>
+          <Form layout="vertical" onFinish={onFinish} form={form}>
             <div style={{ margin: "20px 0 30px" }}>
               <div>
-                <label
+                <Form.Item
+                  name={"title"} 
+                  label="Task" 
                   style={{
+                    color: 'red',
                     fontSize: "14px",
                     fontWeight: "700",
-                    color: "#8c8c8c",
                   }}
-                >
-                  Task
-                </label>
-                <Input onChange={(e) => setTaskTitle(e.target.value)} placeholder="Enter task name" />
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your username!"
+                    }
+                  ]}
+                  >
+                 <Input onChange={(e) => setTaskTitle(e.target.value)} placeholder="Enter task name" />
+                </Form.Item>
               </div>
-              <div style={{ marginTop: "20px" }}>
+              <div style={{ marginTop: "25px" }}>
                 <label
                   style={{
                     fontSize: "14px",
                     fontWeight: "700",
-                    color: "#8c8c8c",
                   }}
                 >
                   Priority
@@ -109,7 +123,7 @@ const AddTaskModal = ({ addTaskModal, handleCancel }: TAddTaskModalProps) => {
                 </Button>
               </Space>
             </div>
-          </form>
+          </Form>
         </div>
       </Modal>
     </>

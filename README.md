@@ -2,5 +2,6 @@
 ## Dependencies
 - Ant design.
 - Sonner.
-- React Hook Form
+- uuid.
+- Redux Persist
 
