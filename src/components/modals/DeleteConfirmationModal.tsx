@@ -1,17 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, Form, Modal, Space } from "antd";
-import warningIcon from "../assets/warning.svg";
+import warningIcon from "../../assets/warning.svg";
 
 type TDeleteModalProps = {
   deleteModal: boolean;
-  handleDeleteCancel: any;
+  closeDeleteModal: any;
   handleDeleteTask: any;
   taskId: string;
 };
 
 const DeleteConfirmationModal = ({
   deleteModal,
-  handleDeleteCancel,
+  closeDeleteModal,
   handleDeleteTask,
   taskId
 }: TDeleteModalProps) => {
@@ -19,7 +19,7 @@ const DeleteConfirmationModal = ({
     <Modal
       open={deleteModal}
       title="Delete Task"
-      onCancel={handleDeleteCancel}
+      onCancel={closeDeleteModal}
       footer={null}
     >
       <div>
@@ -36,7 +36,7 @@ const DeleteConfirmationModal = ({
           </div>
           <div style={{ textAlign: "right" }}>
             <Space>
-              <Button onClick={handleDeleteCancel}>Cancel</Button>
+              <Button onClick={closeDeleteModal}>Cancel</Button>
               <Button
                 htmlType="submit"
                 type="primary"

@@ -1,6 +1,6 @@
 import { Button, Flex } from "antd";
 import { useState } from "react";
-import AddTaskModal from "./AddTaskModal";
+import AddTaskModal from "./modals/AddTaskModal";
 
 const TaskHeader = () => {
   const [addTaskModal, setAddTaskModal] = useState(false);
@@ -40,10 +40,7 @@ const TaskHeader = () => {
         >
           Add Task
         </Button>
-        <AddTaskModal
-          addTaskModal={addTaskModal}
-          handleCancel={handleCancel}
-        />
+        <AddTaskModal addTaskModal={addTaskModal} handleCancel={handleCancel} />
       </div>
     </Flex>
   );

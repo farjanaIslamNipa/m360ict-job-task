@@ -1,20 +1,20 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, Flex, Form, Input, Modal, Space } from "antd";
-import { TTask } from "../types";
+import { TTask } from "../../types";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { useAppDispatch } from "../redux/hooks";
-import { updateTask } from "../redux/features/taskSlice";
+import { useAppDispatch } from "../../redux/hooks";
+import { updateTask } from "../../redux/features/taskSlice";
 
 type TEditModalProps = {
   editModal: boolean;
-  handleEditCancel: any;
+  closeEditModal: any;
   taskData: TTask | null;
 };
 
 const EditTaskModal = ({
   editModal,
-  handleEditCancel,
+  closeEditModal,
   taskData,
 }: TEditModalProps) => {
   const [task, setTask] = useState<TTask | null>(null);
@@ -32,11 +32,11 @@ const EditTaskModal = ({
   const handleEditTask = () => {
     const toastId = toast.loading("Updating task....");
     dispatch(updateTask(task));
-    handleEditCancel();
+    closeEditModal();
     toast.success("Task updated successfully", { id: toastId, duration: 2000 });
   };
 
-  const [form] = Form.useForm()
+  const [form] = Form.useForm();
   useEffect(() => {
     setTask(taskData as TTask);
   }, [taskData]);
@@ -45,14 +45,13 @@ const EditTaskModal = ({
     form.setFieldsValue({
       title: task?.title,
     });
- 
-  },[task?.title, form]);
+  }, [task?.title, form]);
 
   return (
     <Modal
       open={editModal}
       title="Update Task"
-      onCancel={handleEditCancel}
+      onCancel={closeEditModal}
       footer={null}
     >
       <div>
@@ -96,8 +95,7 @@ const EditTaskModal = ({
                   style={{
                     backgroundColor:
                       task?.priority === "High" ? "#f5222d" : "white",
-                    color:
-                      task?.priority === "High" ? "white" : "#f5222d",
+                    color: task?.priority === "High" ? "white" : "#f5222d",
                   }}
                 >
                   High
@@ -108,8 +106,7 @@ const EditTaskModal = ({
                   style={{
                     backgroundColor:
                       task?.priority === "Medium" ? "#faad14" : "white",
-                    color:
-                      task?.priority === "Medium" ? "white" : "#faad14",
+                    color: task?.priority === "Medium" ? "white" : "#faad14",
                   }}
                 >
                   Medium
@@ -130,7 +127,7 @@ const EditTaskModal = ({
           </div>
           <div style={{ textAlign: "right" }}>
             <Space>
-              <Button onClick={handleEditCancel}>Cancel</Button>
+              <Button onClick={closeEditModal}>Cancel</Button>
               <Button
                 htmlType="submit"
                 type="primary"
