@@ -27,10 +27,13 @@ const taskSlice = createSlice({
       const taskId = action.payload.id;
       const updatedStatus = action.payload.status
       state.tasks = state.tasks.map(task => task.id === taskId ? {...task, status:updatedStatus} : task)
+    },
+    toggleComplete: (state, action) => {
+      state.tasks = state.tasks.map(task => task.id === action.payload ? {...task, isCompleted: !task.isCompleted} : task)
     }
   }
 })
 
-export const {addTask, deleteTask, updateTask, updateTaskStatus} = taskSlice.actions;
+export const {addTask, deleteTask, updateTask, updateTaskStatus, toggleComplete} = taskSlice.actions;
 
 export default taskSlice.reducer

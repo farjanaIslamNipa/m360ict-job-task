@@ -20,43 +20,45 @@ body {
   -webkit-box-shadow: 0 0 0 2px rgba(57, 16, 133, 0.2);
   box-shadow: 0 0 0 2px rgba(57, 16, 133, 0.2) rgba(87, 168, 233, 0.2);
 }
-.ant-input:hover{
+.ant-input:hover {
   border-color: #b37feb;
 }
 
-.priority-btn{
-  padding:5px 10px; 
-  border-radius:8px; 
-  width: 80px; 
-  text-align: center; 
+.priority-btn {
+  padding: 5px 10px;
+  border-radius: 8px;
+  width: 80px;
+  text-align: center;
   font-weight: 500;
   transition: all 0.2s ease-in-out;
   cursor: pointer;
 }
-.priority-high{
+.priority-high {
   border: 1px solid #f5222d;
 }
-.priority-high:hover{
+.priority-high:hover {
   color: #ffffff;
   background-color: #f5222d;
 }
-.priority-medium{
+.priority-medium {
   border: 1px solid #faad14;
 }
-.priority-medium:hover{
+.priority-medium:hover {
   color: #ffffff;
   background-color: #faad14;
 }
-.priority-low{
+.priority-low {
   border: 1px solid #389e0d;
 }
-.priority-low:hover{
+.priority-low:hover {
   color: #ffffff;
   background-color: #389e0d;
 }
 
-.task-row{
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+.task-row {
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
+    rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
   padding: 20px;
   border-radius: 20px;
+  margin: 10px 0;
 }

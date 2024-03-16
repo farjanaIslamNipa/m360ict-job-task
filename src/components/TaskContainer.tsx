@@ -1,13 +1,18 @@
-import { Col, Row } from "antd";
+import { Col, Flex, Row } from "antd";
 import editIcon from "../assets/edit-icon.svg";
 import deleteIcon from "../assets/delete-icon.svg";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { TTask } from "../types";
 import { toast } from "sonner";
-import { deleteTask, updateTaskStatus } from "../redux/features/taskSlice";
+import {
+  deleteTask,
+  toggleComplete,
+  updateTaskStatus,
+} from "../redux/features/taskSlice";
 import { useState } from "react";
 import DeleteConfirmationModal from "./DeleteConfirmationModal";
 import EditTaskModal from "./EditTaskModal";
+import checkmark from "../assets/checkmark.svg";
 
 const TaskContainer = () => {
   const [editModal, setEditModal] = useState(false);
@@ -16,22 +21,6 @@ const TaskContainer = () => {
   const [task, setTask] = useState<TTask | null>(null);
   const { tasks } = useAppSelector((state) => state.tasks);
   const dispatch = useAppDispatch();
-
-  const handleTaskStatus = (id: string, status: string) => {
-    let taskStatus;
-    if (status === "To Do") {
-      taskStatus = "In Progress";
-    } else if (status === "In Progress") {
-      taskStatus = "Done";
-    } else {
-      taskStatus = "To Do";
-    }
-    const updatedTask = {
-      id,
-      status: taskStatus,
-    };
-    dispatch(updateTaskStatus(updatedTask));
-  };
 
   const showEditModal = (item: TTask) => {
     setTask(item);
@@ -56,6 +45,26 @@ const TaskContainer = () => {
     toast.success("Task deleted successfully", { id: toastId, duration: 2000 });
     handleDeleteCancel();
   };
+
+  const handleTaskStatus = (id: string, status: string) => {
+    let taskStatus;
+    if (status === "To Do") {
+      taskStatus = "In Progress";
+    } else if (status === "In Progress") {
+      taskStatus = "Done";
+    } else {
+      taskStatus = "To Do";
+    }
+    const updatedTask = {
+      id,
+      status: taskStatus,
+    };
+    dispatch(updateTaskStatus(updatedTask));
+  };
+
+  const handleComplete = (id: string) => {
+    dispatch(toggleComplete(id));
+  };
   return (
     <div
       style={{
@@ -66,9 +75,34 @@ const TaskContainer = () => {
       }}
     >
       {tasks.map((task: TTask) => (
-        <Row key={task?.id} gutter={4} align={"middle"} className="task-row">
+        <Row
+          key={task?.id}
+          gutter={4}
+          align={"middle"}
+          className="task-row"
+          style={{
+            backgroundColor: task?.isCompleted ? "#f9f0ff" : "white",
+            opacity: task?.isCompleted ? "0.8" : "1",
+          }}
+        >
+          <Col className="gutter-row" span={1}>
+            <div
+              onClick={() => handleComplete(task?.id)}
+              style={{
+                backgroundColor:
+                  task.isCompleted === true ? "#391085" : "#ffffff",
+                border: "1px solid #bdbdbd",
+                borderRadius: "4px",
+                height: "19px",
+                width: "19px",
+                cursor: "pointer",
+              }}
+            >
+              <img src={checkmark} alt="Task Completed" height={"18px"} />
+            </div>
+          </Col>
           <Col className="gutter-row" span={10}>
-            <div style={{ paddingRight: "10px" }}>
+            <div style={{ paddingRight: "10px", paddingLeft: "10px" }}>
               <p style={{ color: "#b1b1b1", fontWeight: "600" }}>Title</p>
               <p
                 style={{
@@ -81,7 +115,7 @@ const TaskContainer = () => {
               </p>
             </div>
           </Col>
-          <Col className="gutter-row" span={5}>
+          <Col className="gutter-row" span={4}>
             <div style={{ padding: "0" }}>
               <p style={{ color: "#b1b1b1", fontWeight: "600" }}>Priority</p>
               <p
@@ -99,10 +133,17 @@ const TaskContainer = () => {
               </p>
             </div>
           </Col>
-          <Col className="gutter-row" span={4} style={{ display: "flex", justifyContent: "center" }}>
+          <Col
+            className="gutter-row"
+            span={4}
+            style={{ display: "flex", justifyContent: "center" }}
+          >
             <div
               onClick={() => handleTaskStatus(task?.id, task?.status as string)}
-              style={{ cursor: "pointer" }}
+              style={{
+                pointerEvents: task?.isCompleted ? "none" : "auto",
+                cursor: "pointer",
+              }}
             >
               <span
                 style={{
@@ -123,7 +164,11 @@ const TaskContainer = () => {
               </span>
             </div>
           </Col>
-          <Col className="gutter-row" span={5}>
+          <Col
+            className="gutter-row"
+            span={5}
+            style={{ pointerEvents: task?.isCompleted ? "none" : "auto" }}
+          >
             <div
               style={{
                 padding: "0",
