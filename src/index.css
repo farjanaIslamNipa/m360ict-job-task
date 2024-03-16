@@ -22,6 +22,14 @@ body {
   padding: 10px 20px 20px;
 }
 
+.task-row {
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
+    rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+  padding: 20px;
+  border-radius: 20px;
+  margin: 10px 0;
+}
+
 .task-complete-checkbox {
   border: 1px solid #bdbdbd;
   border-radius: 4px;
@@ -50,6 +58,12 @@ body {
   align-items: center;
   justify-content: end;
   gap: 10px;
+}
+.edit-icon{
+  height: 21px;
+}
+.delete-icon{
+  height: 25px;
 }
 .ant-input:focus {
   border-color: #b37feb;
@@ -92,10 +106,33 @@ body {
   background-color: #389e0d;
 }
 
-.task-row {
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
-    rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
-  padding: 20px;
-  border-radius: 20px;
-  margin: 10px 0;
+
+
+@media(max-width:650px){
+  .task-title{
+    font-size: 15px;
+  }
+  .action-column {
+    gap: 5px;
+  }
+  .task-status {
+    padding: 3px 6px;
+  }
+}
+@media(max-width:650px){
+  .task-list-container {
+    padding: 10px 15px 20px;
+  }
+  .task-row {
+    padding: 20px 10px;
+  }
+  .task-title{
+    font-size: 14px;
+  }
+  .edit-icon{
+    height: 18px;
+  }
+  .delete-icon{
+    height: 21px;
+  }
 }

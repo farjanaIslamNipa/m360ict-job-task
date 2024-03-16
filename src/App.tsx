@@ -13,7 +13,7 @@ function App() {
         }}
       >
         <Flex justify="center">
-          <Col span={12}>
+          <Col span={24} sm={{span: 23}} md={{ span: 20 }} lg={{ span: 16 }} xl={{ span: 12 }}>
             <TaskHeader />
             <TaskContainer />
           </Col>

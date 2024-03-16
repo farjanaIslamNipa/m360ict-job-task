@@ -135,8 +135,8 @@ const TaskContainer = () => {
                 <img src={checkmark} alt="Task Completed" height={"18px"} />
               </div>
             </Col>
-            <Col className="gutter-row" span={10}>
-              <div style={{ padding: "0 10px" }}>
+            <Col className="gutter-row" span={9} md={{ span: 10 }}>
+              <div style={{ paddingLeft: "10px" }}>
                 <p style={{ color: "#b1b1b1", fontWeight: "600" }}>Title</p>
                 <p className="task-title">{task?.title}</p>
               </div>
@@ -161,7 +161,8 @@ const TaskContainer = () => {
             </Col>
             <Col
               className="gutter-row"
-              span={4}
+              span={6}
+              md={{ span: 4 }}
               style={{ display: "flex", justifyContent: "center" }}
             >
               <div
@@ -190,7 +191,8 @@ const TaskContainer = () => {
             </Col>
             <Col
               className="gutter-row"
-              span={5}
+              span={4}
+              md={{ span: 5 }}
               style={{ pointerEvents: task?.isCompleted ? "none" : "auto" }}
             >
               <div className="action-column">
@@ -198,13 +200,13 @@ const TaskContainer = () => {
                   onClick={() => showEditModal(task)}
                   style={{ cursor: "pointer" }}
                 >
-                  <img src={editIcon} alt="Edit task" height={"21px"} />
+                  <img src={editIcon} alt="Edit task" className="edit-icon" />
                 </div>
                 <div
                   onClick={() => showDeleteModal(task?.id)}
                   style={{ cursor: "pointer" }}
                 >
-                  <img src={deleteIcon} alt="delete task" height={"25px"} />
+                  <img src={deleteIcon} alt="delete task" className="delete-icon" />
                 </div>
               </div>
             </Col>
