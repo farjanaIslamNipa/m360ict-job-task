@@ -136,3 +136,11 @@ body {
     height: 21px;
   }
 }
+
+.ant-select-outlined:not(.ant-select-disabled):not(.ant-select-customize-input):not(.ant-pagination-size-changer):hover .ant-select-selector{
+  border-color: #b37feb !important;
+}
+
+.ant-select-selector:hover, .ant-select-selector:focus-within {
+  border: 1px solid #b37feb !important;
+}

@@ -4,9 +4,11 @@ import { TTask } from "../../types";
 
 type TInitialState = {
   tasks: TTask[];
+  filteredTasks: TTask[];
 };
 const initialState: TInitialState = {
   tasks: [],
+  filteredTasks: []
 };
 
 const taskSlice = createSlice({

@@ -10,7 +10,7 @@ const NoTaskFound = () => {
           fontWeight: "500",
         }}
       >
-        Task list is empty
+        No task found !!
       </p>
       <div
         style={{
