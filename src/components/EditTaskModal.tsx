@@ -1,49 +1,53 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {Button, Flex, Form, Input, Modal, Space} from "antd";
-import {TPriority, TTask} from "../types";
-import {useEffect, useState} from "react";
-import {toast} from "sonner";
-import {useAppDispatch} from "../redux/hooks";
-import {updateTask} from "../redux/features/taskSlice";
+import { Button, Flex, Form, Input, Modal, Space } from "antd";
+import { TTask } from "../types";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import { useAppDispatch } from "../redux/hooks";
+import { updateTask } from "../redux/features/taskSlice";
 
 type TEditModalProps = {
   editModal: boolean;
   handleEditCancel: any;
-  task: TTask | null;
+  taskData: TTask | null;
 };
 
-const EditTaskModal = ({editModal, handleEditCancel, task} : TEditModalProps) => {
-  const [editedTask, setEditedTask] = useState<TTask | null>(null);
+const EditTaskModal = ({
+  editModal,
+  handleEditCancel,
+  taskData,
+}: TEditModalProps) => {
+  const [task, setTask] = useState<TTask | null>(null);
 
+  const dispatch = useAppDispatch();
 
-  const [taskTitle, setTaskTitle] = useState("");
-  const [taskPriority, setTaskPriority] = useState<TPriority | null>(null);
-  const dispatch = useAppDispatch()
-
-  const handlePriority = (priority: TPriority) => {
-    setTaskPriority(priority);
+  const handleItemUpdate = (name: string, value: string) => {
+    const updateItem = {
+      ...task,
+      [name]: value,
+    };
+    setTask(updateItem as TTask);
   };
 
   const handleEditTask = () => {
-    const id = task?.id;
-    const taskData = {
-      ...editedTask,
-      id,
-      title: taskTitle,
-      priority: taskPriority
-    }
-    const toastId = toast.loading('Updating task....')
-    dispatch(updateTask(taskData))
-    handleEditCancel()
-    toast.success('Task updated successfully', {id: toastId, duration: 2000})
-  }
+    const toastId = toast.loading("Updating task....");
+    dispatch(updateTask(task));
+    handleEditCancel();
+    toast.success("Task updated successfully", { id: toastId, duration: 2000 });
+  };
+
+  const [form] = Form.useForm()
+  useEffect(() => {
+    setTask(taskData as TTask);
+  }, [taskData]);
 
   useEffect(() => {
-    setEditedTask(task as TTask)
-  }, [task])
-  useEffect(() => {
-    setTaskPriority(task?.priority as TPriority)
-  }, [task?.priority])
+    form.setFieldsValue({
+      title: task?.title,
+    });
+ 
+  },[task?.title, form]);
+
   return (
     <Modal
       open={editModal}
@@ -52,83 +56,91 @@ const EditTaskModal = ({editModal, handleEditCancel, task} : TEditModalProps) =>
       footer={null}
     >
       <div>
-      <Form layout="vertical" onFinish={handleEditTask}>
-            <div style={{ margin: "20px 0 30px" }}>
-              <div>
-                <Form.Item
-                  name={"title"} 
-                  label="Task" 
+        <Form layout="vertical" onFinish={handleEditTask} form={form}>
+          <div style={{ margin: "20px 0 30px" }}>
+            <div>
+              <Form.Item
+                name={"title"}
+                label="Task"
+                style={{
+                  color: "red",
+                  fontSize: "14px",
+                  fontWeight: "700",
+                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your username!",
+                  },
+                ]}
+              >
+                <Input
+                  onChange={(e) => handleItemUpdate("title", e.target.value)}
+                  placeholder="Enter task name"
+                />
+              </Form.Item>
+            </div>
+            <div style={{ marginTop: "25px" }}>
+              <label
+                style={{
+                  fontSize: "14px",
+                  fontWeight: "700",
+                }}
+              >
+                Priority
+              </label>
+              <Flex gap="small" style={{ marginTop: "5px" }}>
+                <div
+                  onClick={() => handleItemUpdate("priority", "High")}
+                  className="priority-btn priority-high"
                   style={{
-                    color: 'red',
-                    fontSize: "14px",
-                    fontWeight: "700",
-                  }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your username!"
-                    }
-                  ]}
-                  >
-                 <Input onChange={(e) => setTaskTitle(e.target.value)}  defaultValue={task?.title} placeholder="Enter task name" />
-                </Form.Item>
-              </div>
-              <div style={{ marginTop: "25px" }}>
-                <label
-                  style={{
-                    fontSize: "14px",
-                    fontWeight: "700",
+                    backgroundColor:
+                      task?.priority === "High" ? "#f5222d" : "white",
+                    color:
+                      task?.priority === "High" ? "white" : "#f5222d",
                   }}
                 >
-                  Priority
-                </label>
-                <Flex gap="small" style={{ marginTop: "5px" }}>
-                  <div
-                    onClick={() => handlePriority("High")}
-                    className="priority-btn priority-high"
-                    style={{
-                      backgroundColor: taskPriority === "High" ? "#f5222d" : "white",
-                      color: taskPriority === "High" ? "white" : "#f5222d"
-                    }}
-                  >
-                    High
-                  </div>
-                  <div
-                    onClick={() => handlePriority("Medium")}
-                    className="priority-btn priority-medium"
-                    style={{
-                      backgroundColor: taskPriority === "Medium" ? "#faad14" : "white",
-                      color: taskPriority === "Medium" ? "white" : "#faad14"
-                    }}
-                  >
-                    Medium
-                  </div>
-                  <div
-                    onClick={() => handlePriority("Low")}
-                    className="priority-btn priority-low"
-                    style={{
-                      backgroundColor: taskPriority === "Low" ? "#389e0d" : "white",
-                      color: taskPriority === "Low" ? "white" : "#389e0d"
-                    }}
-                  >
-                    Low
-                  </div>
-                </Flex>
-              </div>
-            </div>
-            <div style={{ textAlign: "right" }}>
-              <Space>
-                <Button onClick={handleEditCancel}>Cancel</Button>
-                <Button
-                  htmlType="submit"
-                  type="primary"
-                  style={{ backgroundColor: "#391085" }}
+                  High
+                </div>
+                <div
+                  onClick={() => handleItemUpdate("priority", "Medium")}
+                  className="priority-btn priority-medium"
+                  style={{
+                    backgroundColor:
+                      task?.priority === "Medium" ? "#faad14" : "white",
+                    color:
+                      task?.priority === "Medium" ? "white" : "#faad14",
+                  }}
                 >
-                  Submit
-                </Button>
-              </Space>
+                  Medium
+                </div>
+                <div
+                  onClick={() => handleItemUpdate("priority", "Low")}
+                  className="priority-btn priority-low"
+                  style={{
+                    backgroundColor:
+                      task?.priority === "Low" ? "#389e0d" : "white",
+                    color: task?.priority === "Low" ? "white" : "#389e0d",
+                  }}
+                >
+                  Low
+                </div>
+              </Flex>
             </div>
-          </Form>
+          </div>
+          <div style={{ textAlign: "right" }}>
+            <Space>
+              <Button onClick={handleEditCancel}>Cancel</Button>
+              <Button
+                htmlType="submit"
+                type="primary"
+                style={{ backgroundColor: "#391085" }}
+              >
+                Submit
+              </Button>
+            </Space>
+          </div>
+        </Form>
       </div>
     </Modal>
   );

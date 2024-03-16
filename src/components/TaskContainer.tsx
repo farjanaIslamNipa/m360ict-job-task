@@ -109,7 +109,7 @@ const TaskContainer = () => {
         ))
         }
         <DeleteConfirmationModal deleteModal={deleteModal} handleDeleteCancel={handleDeleteCancel} handleDeleteTask={handleDeleteTask} taskId={taskId}  />
-        <EditTaskModal editModal={editModal} handleEditCancel={handleEditCancel} task={task}  />
+        <EditTaskModal editModal={editModal} handleEditCancel={handleEditCancel} taskData={task}  />
     </div>
   );
 };

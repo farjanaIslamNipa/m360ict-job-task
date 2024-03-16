@@ -16,13 +16,9 @@ const taskSlice = createSlice({
       state.tasks.push({...action.payload, status: 'To Do', isCompleted: false})
     },
     updateTask: (state, action) => {
-      console.log(action.payload, 'action')
-      const {id, updatedTask} = action.payload
-      const index = state.tasks.findIndex(task => task.id === id)
-
-      if(index !== -1){
-        state.tasks[index] = updatedTask
-      }
+      const taskId = action.payload.id;
+      const updatedTask = action.payload
+      state.tasks = state.tasks.map(task => task.id === taskId ? updatedTask : task )
     },
     deleteTask: (state, action) => {
       state.tasks = state.tasks.filter(task => task.id !== action.payload)
