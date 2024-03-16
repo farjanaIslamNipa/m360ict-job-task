@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createSlice } from "@reduxjs/toolkit";
 import { TTask } from "../../types";
 
@@ -42,6 +43,9 @@ const taskSlice = createSlice({
           ? { ...task, isCompleted: !task.isCompleted }
           : task
       );
+    },
+    sortCompleted: (state) => {
+      state.tasks = state.tasks.sort((a : any, b :any) => a.isCompleted - b.isCompleted)
     }
   },
 });
@@ -51,7 +55,8 @@ export const {
   deleteTask,
   updateTask,
   updateTaskStatus,
-  toggleComplete
+  toggleComplete,
+  sortCompleted
 } = taskSlice.actions;
 
 export default taskSlice.reducer;

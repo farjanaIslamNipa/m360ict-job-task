@@ -1,4 +1,5 @@
-import { Col, Row } from "antd";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Col, Flex, Row } from "antd";
 import editIcon from "../assets/edit-icon.svg";
 import deleteIcon from "../assets/delete-icon.svg";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
@@ -6,6 +7,7 @@ import { TTask } from "../types";
 import { toast } from "sonner";
 import {
   deleteTask,
+  sortCompleted,
   toggleComplete,
   updateTaskStatus,
 } from "../redux/features/taskSlice";
@@ -35,6 +37,7 @@ const TaskContainer = () => {
   const filteredTasks = tasks?.filter(
     (task) => task.priority === filterPriority
   );
+
 
   useEffect(() => {
     if (filterPriority !== "All") {
@@ -75,7 +78,9 @@ const TaskContainer = () => {
   // HANDLE COMPLETE
   const handleComplete = (id: string) => {
     dispatch(toggleComplete(id));
+    dispatch(sortCompleted())
   };
+  const completedTask = [...taskList].filter(task => task.isCompleted === true)
 
   // HANDLE STATUS
   const handleTaskStatus = (id: string, status: string) => {
@@ -94,15 +99,20 @@ const TaskContainer = () => {
     dispatch(updateTaskStatus(updatedTask));
   };
 
+
   return (
     <div className="task-list-container">
       {taskList?.length > 0 && (
-        <div>
+        <Flex justify="space-between">
+          <div>
+            <p style={{fontWeight: '600'}}>Total Task: <span style={{fontSize: '17px', color: '#22075e'}}>{taskList?.length}</span></p>
+            <p style={{fontWeight: '600'}}>Completed Task: <span style={{fontSize: '17px', color: '#22075e'}}>{completedTask?.length}</span></p>
+          </div>
           <TaskFilters handlePriorityFilter={handlePriorityFilter} />
-        </div>
+        </Flex>
       )}
       {taskList?.length > 0 ? (
-        taskList?.map((task: TTask) => (
+        [...taskList]?.sort().reverse().map((task: TTask) => (
           <Row
             key={task?.id}
             gutter={4}

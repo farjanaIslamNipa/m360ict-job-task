@@ -13,7 +13,7 @@ const DeleteConfirmationModal = ({
   deleteModal,
   closeDeleteModal,
   handleDeleteTask,
-  taskId
+  taskId,
 }: TDeleteModalProps) => {
   return (
     <Modal
@@ -24,13 +24,19 @@ const DeleteConfirmationModal = ({
     >
       <div>
         <Form layout="vertical" onFinish={() => handleDeleteTask(taskId)}>
-          <div style={{ padding: "10px 20px 40px", textAlign: "center" }}>
+          <div style={{ padding: "10px 10px 30px", textAlign: "center" }}>
             <img
               src={warningIcon}
               alt="Delete Task"
               style={{ margin: "0 auto", height: "50px" }}
             />
-            <p style={{ fontSize: "18px", fontWeight: "600" }}>
+            <p
+              style={{
+                fontSize: "16px",
+                lineHeight: "20px",
+                fontWeight: "600",
+              }}
+            >
               Are you sure, <br /> you want to delete this task ?
             </p>
           </div>

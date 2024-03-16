@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {Flex, Select} from "antd";
+import {Select} from "antd";
 
 const priorityOptions = [
   {
@@ -25,15 +25,13 @@ type TFilterProps = {
 }
 const TaskFilters = ({handlePriorityFilter} : TFilterProps) => {
   return (
-    <Flex justify="end" gap={10}>
-      <Select
+    <Select
         style={{ width: "150px" }}
         placeholder="Select Priority"
         optionFilterProp="children"
         onChange={handlePriorityFilter}
         options={priorityOptions}
       />
-    </Flex>
   );
 };
 
