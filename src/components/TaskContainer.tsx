@@ -1,4 +1,4 @@
-import { Col, Flex, Row } from "antd";
+import { Col, Row } from "antd";
 import editIcon from "../assets/edit-icon.svg";
 import deleteIcon from "../assets/delete-icon.svg";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
@@ -9,17 +9,36 @@ import {
   toggleComplete,
   updateTaskStatus,
 } from "../redux/features/taskSlice";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DeleteConfirmationModal from "./DeleteConfirmationModal";
 import EditTaskModal from "./EditTaskModal";
 import checkmark from "../assets/checkmark.svg";
+import TaskFilters from "./TaskFilters";
 
 const TaskContainer = () => {
   const [editModal, setEditModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
-  const [taskId, setTaskId] = useState("");
-  const [task, setTask] = useState<TTask | null>(null);
   const { tasks } = useAppSelector((state) => state.tasks);
+  const [taskList, setTaskList] = useState<TTask[] | null>(null);
+  const [task, setTask] = useState<TTask | null>(null);
+  const [taskId, setTaskId] = useState("");
+
+
+  const [filterPriority, setFilterPriority] = useState("All");
+  const handlePriorityFilter = (value: string) => {
+    setFilterPriority(value)
+  };
+
+  const filteredTasks = tasks?.filter(task => task.priority === filterPriority)
+  useEffect(() => {
+    if(filterPriority !== "All"){
+      setTaskList(filteredTasks)
+    }else{
+      setTaskList(tasks)
+    }
+
+  },[tasks, filterPriority, filteredTasks])
+
   const dispatch = useAppDispatch();
 
   const showEditModal = (item: TTask) => {
@@ -65,6 +84,8 @@ const TaskContainer = () => {
   const handleComplete = (id: string) => {
     dispatch(toggleComplete(id));
   };
+
+
   return (
     <div
       style={{
@@ -74,7 +95,10 @@ const TaskContainer = () => {
         padding: "20px",
       }}
     >
-      {tasks.map((task: TTask) => (
+      <div>
+        <TaskFilters handlePriorityFilter={handlePriorityFilter} />
+      </div>
+      {taskList?.map((task: TTask) => (
         <Row
           key={task?.id}
           gutter={4}
