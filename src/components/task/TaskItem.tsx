@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {Col, Row} from "antd";
-import {TTask} from "../types";
-import editIcon from "../assets/edit-icon.svg";
-import deleteIcon from "../assets/delete-icon.svg";
-import checkmark from "../assets/checkmark.svg";
+import {TTask} from "../../types";
+import editIcon from "../../assets/edit-icon.svg";
+import deleteIcon from "../../assets/delete-icon.svg";
+import checkmark from "../../assets/checkmark.svg";
 
 type TTaskItemProps = {
   task: TTask,

@@ -1,6 +1,6 @@
 import { Col, Flex } from "antd";
-import TaskHeader from "./components/TaskHeader";
-import TaskContainer from "./components/TaskContainer";
+import TaskHeader from "./components/task/TaskHeader";
+import TaskContainer from "./components/task/TaskContainer";
 
 function App() {
   return (

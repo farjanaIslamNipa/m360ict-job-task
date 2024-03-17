@@ -1,5 +1,9 @@
 # Task Management
 
+### Application overview:
+ This is a task management application where user can add, edit and delete a task, mark as complete on incomplete, filter tasks according priority.
+
+
 ### command to run the server:
  `npm run dev`.
 

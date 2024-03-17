@@ -1,17 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {Flex} from "antd";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { TTask } from "../types";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { TTask } from "../../types";
 import { toast } from "sonner";
 import {
   deleteTask,
   sortCompleted,
   toggleComplete,
   updateTaskStatus,
-} from "../redux/features/taskSlice";
+} from "../../redux/features/taskSlice";
 import { useState } from "react";
-import DeleteConfirmationModal from "./modals/DeleteConfirmationModal";
-import EditTaskModal from "./modals/EditTaskModal";
+import DeleteConfirmationModal from "../modals/DeleteConfirmationModal";
+import EditTaskModal from "../modals/EditTaskModal";
 import TaskFilters from "./TaskFilters";
 import NoTaskFound from "./NoTaskFound";
 import TaskItem from "./TaskItem";
@@ -77,6 +77,7 @@ const TaskContainer = () => {
     dispatch(toggleComplete(id));
     dispatch(sortCompleted())
   };
+  
   const completedTask = [...filteredTaskList].filter(task => task.isCompleted === true)
 
   // HANDLE STATUS
